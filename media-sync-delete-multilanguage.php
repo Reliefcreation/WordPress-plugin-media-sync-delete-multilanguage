@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Media Sync Delete Multilanguage for WPML
-Plugin URI: https://example.com/media-sync-delete-multilanguage
+Plugin URI: https://github.com/Reliefcreation/WordPress-plugin-media-sync-delete-multilanguage
 Description: Synchronizes media deletion across WPML translations to maintain consistency across languages
-Version: 1.0.0
+Version: 1.0.1
 Author: RELIEF Creation
 Author URI: https://reliefcreation.com/
 License: GPL v2 or later
@@ -20,6 +20,7 @@ if (!defined('ABSPATH')) {
 class Media_Sync_Delete_Multilanguage {
     private static $instance = null;
     private $error_log = array();
+    private $plugin_version = '1.0.1';
 
     public static function get_instance() {
         if (null === self::$instance) {
@@ -35,6 +36,17 @@ class Media_Sync_Delete_Multilanguage {
         
         // Ajouter un menu pour voir les logs
         add_action('admin_menu', array($this, 'add_admin_menu'));
+
+        // Vérifier la version et effectuer des mises à jour si nécessaire
+        $this->check_version();
+    }
+
+    private function check_version() {
+        $installed_version = get_option('media_sync_delete_version', '1.0.0');
+        if (version_compare($installed_version, $this->plugin_version, '<')) {
+            // Mettre à jour la version
+            update_option('media_sync_delete_version', $this->plugin_version);
+        }
     }
 
     private $notices = array();
@@ -74,6 +86,12 @@ class Media_Sync_Delete_Multilanguage {
         ?>
         <div class="wrap">
             <h1><?php _e('Media Sync Deletion Logs', 'media-sync-delete-multilanguage'); ?></h1>
+            <p class="description">
+                <?php printf(
+                    __('Plugin Version: %s', 'media-sync-delete-multilanguage'),
+                    esc_html($this->plugin_version)
+                ); ?>
+            </p>
             <table class="widefat">
                 <thead>
                     <tr>
@@ -83,13 +101,19 @@ class Media_Sync_Delete_Multilanguage {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($logs as $log): ?>
-                    <tr>
-                        <td><?php echo esc_html($log['date']); ?></td>
-                        <td><?php echo esc_html($log['message']); ?></td>
-                        <td><?php echo esc_html($log['status']); ?></td>
-                    </tr>
-                    <?php endforeach; ?>
+                    <?php if (empty($logs)): ?>
+                        <tr>
+                            <td colspan="3"><?php _e('No logs available.', 'media-sync-delete-multilanguage'); ?></td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($logs as $log): ?>
+                        <tr>
+                            <td><?php echo esc_html($log['date']); ?></td>
+                            <td><?php echo esc_html($log['message']); ?></td>
+                            <td><?php echo esc_html($log['status']); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
