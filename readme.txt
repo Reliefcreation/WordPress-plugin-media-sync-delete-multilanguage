@@ -19,7 +19,8 @@ Features:
 * Automatic synchronization of media deletions across all languages
 * Works seamlessly with WPML Media Translation
 * Prevents orphaned translated media files
-* Logging support for debugging
+* Enhanced logging system with user interface
+* Version tracking and updates management
 * Clean and efficient code
 * Maintains media library consistency across languages
 
@@ -47,7 +48,18 @@ Yes, the plugin includes safety checks to prevent recursive deletions and mainta
 
 The plugin is specifically designed to work with images in the media library that have translations in WPML.
 
+= Where can I see the deletion logs? =
+
+You can find the deletion logs in the WordPress admin under Tools > Media Sync Logs.
+
 == Changelog ==
+
+= 1.0.1 =
+* Added version tracking system
+* Enhanced logging interface with empty state message
+* Added plugin version display in logs page
+* Improved error handling and notifications
+* General code optimization and cleanup
 
 = 1.0.0 =
 * Initial release
@@ -57,6 +69,9 @@ The plugin is specifically designed to work with images in the media library tha
 * Implemented safety checks for recursive deletions
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+This update adds version tracking and enhances the logging interface. Update recommended for all users.
 
 = 1.0.0 =
 Initial release of Media Sync Delete Multilanguage for WPML
